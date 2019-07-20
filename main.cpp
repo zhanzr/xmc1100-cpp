@@ -28,8 +28,8 @@ XMC_GPIO_CONFIG_t uart_rx;
 __IO uint32_t g_Ticks;
 
 int main(void) {
-	LED LED1(0, 7, true);
-	LED* pLED4 = new LED(1,4,false);
+	LED LED1(0);
+	LED* pLED4 = new LED(4);
 	
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / 1000);
@@ -81,7 +81,7 @@ int main(void) {
   ::XMC_RTC_Start();
 		
 	vector<uint32_t> vD;
-	vD.reserve(128);
+	vD.reserve(64);
 
 	while (1) {			
 		LED1.Toogle();

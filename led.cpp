@@ -11,22 +11,29 @@
 XMC_GPIO_MODE_t LED::InitMode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN;
 XMC_GPIO_MODE_t LED::UnInitMode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN;
 
+const led_position_pair LED::LedPositions[LED::LED_COUNT] = {
+	std::make_pair(XMC_GPIO_PORT0, 7),
+	std::make_pair(XMC_GPIO_PORT0, 5),
+	std::make_pair(XMC_GPIO_PORT0, 6),
+	std::make_pair(XMC_GPIO_PORT1, 4),
+	std::make_pair(XMC_GPIO_PORT1, 5),
+};
+
 //Default Constructor
 LED::LED(void) {
-	m_Port = 0;
-	m_Pin = 0;
+	m_num = LED::LED_COUNT;
 	m_IsInv = false;
 	m_HasInit = false;
 }
 
-LED::LED(uint8_t port, uint8_t pin, bool inv_logic) {
+LED::LED(const uint8_t num) {
 	//TODO:Check the port and pin are valid parameter
-	m_Port = port;
-	m_Pin = pin;
-	m_IsInv = inv_logic;
+	assert( num < LED::LED_COUNT );
 	
-	::XMC_GPIO_SetMode((XMC_GPIO_PORT_t *)(PORT0_BASE + port*0x100),
-											pin, 
+	m_num = num;
+	
+	::XMC_GPIO_SetMode(LedPositions[num].first,
+											LedPositions[num].second, 
 											InitMode);
 
 	m_HasInit = true;
@@ -35,21 +42,20 @@ LED::LED(uint8_t port, uint8_t pin, bool inv_logic) {
 }
 
 LED::~LED(void) {
-	UnInit(m_Port, m_Pin);
+	UnInit();
 }
 
-void LED::Init(uint8_t port, uint8_t pin, bool inv_logic) {
-	//TODO:Check the port and pin are valid parameter
+void LED::Init(const bool inv_logic) {
+	assert( m_num < LED::LED_COUNT );
+
 	if(m_HasInit) {
-		UnInit(port, pin);
+		UnInit();
 	}
-	
-	m_Port = port;
-	m_Pin = pin;
+
 	m_IsInv = inv_logic;
 	
-	::XMC_GPIO_SetMode((XMC_GPIO_PORT_t *)(PORT0_BASE + port*0x100),
-											pin, 
+	::XMC_GPIO_SetMode(LedPositions[m_num].first,
+											LedPositions[m_num].second, 
 											InitMode);
 
 	m_HasInit = true;
@@ -57,11 +63,12 @@ void LED::Init(uint8_t port, uint8_t pin, bool inv_logic) {
 	Off();
 }
 
-void LED::UnInit(uint8_t port, uint8_t pin) {
-	//UnInitialization
+void LED::UnInit(void) {
+	assert( m_num < LED::LED_COUNT );
+
 	if(m_HasInit) {
-		::XMC_GPIO_SetMode((XMC_GPIO_PORT_t *)(PORT0_BASE + m_Port*0x100),
-												m_Pin, 
+		::XMC_GPIO_SetMode(LedPositions[m_num].first,
+											LedPositions[m_num].second, 
 												UnInitMode);	
 
 		m_HasInit = false;				
@@ -69,27 +76,38 @@ void LED::UnInit(uint8_t port, uint8_t pin) {
 }
 
 void LED::On(void) {
+	assert( m_num < LED::LED_COUNT );
+
 	if(m_HasInit) {
 		if(m_IsInv) {
-			::XMC_GPIO_SetOutputLow((XMC_GPIO_PORT_t *)(PORT0_BASE + m_Port*0x100), m_Pin);
+			::XMC_GPIO_SetOutputLow(LedPositions[m_num].first,
+											LedPositions[m_num].second);
 		} else {
-			::XMC_GPIO_SetOutputHigh((XMC_GPIO_PORT_t *)(PORT0_BASE + m_Port*0x100), m_Pin);
+			::XMC_GPIO_SetOutputHigh(LedPositions[m_num].first,
+											LedPositions[m_num].second);
 		}
 	}
 }
 
 void LED::Off(void) {
+	assert( m_num < LED::LED_COUNT );
+
 	if(m_HasInit) {
 		if(m_IsInv) {
-			::XMC_GPIO_SetOutputHigh((XMC_GPIO_PORT_t *)(PORT0_BASE + m_Port*0x100), m_Pin);
+			::XMC_GPIO_SetOutputHigh(LedPositions[m_num].first,
+											LedPositions[m_num].second);
 		}	else {
-			::XMC_GPIO_SetOutputLow((XMC_GPIO_PORT_t *)(PORT0_BASE + m_Port*0x100), m_Pin);
+			::XMC_GPIO_SetOutputLow(LedPositions[m_num].first,
+											LedPositions[m_num].second);
 		}
 	}			
 }
 
 void LED::Toogle(void) {
+	assert( m_num < LED::LED_COUNT );
+
 	if(m_HasInit) {
-		XMC_GPIO_ToggleOutput((XMC_GPIO_PORT_t *)(PORT0_BASE + m_Port*0x100), m_Pin);
+		XMC_GPIO_ToggleOutput(LedPositions[m_num].first,
+											LedPositions[m_num].second);
 	}		
 }

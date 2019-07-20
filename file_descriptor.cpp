@@ -22,7 +22,6 @@ namespace std {
   FILE __stdin;
   FILE __stderr;
   int fgetc(FILE *f) {
-    /* Your implementation of fgetc(). */
     return 0;
   }
 	
@@ -32,25 +31,22 @@ namespace std {
   }
 	
   int ferror(FILE *stream) {
-    /* Your implementation of ferror(). */
+		return 0;
   }
 	
   long int ftell(FILE *stream) {
-    /* Your implementation of ftell(). */
+		return 0;
   }
 	
   int fclose(FILE *f) {
-    /* Your implementation of fclose(). */
     return 0;
   }
 	
   int fseek(FILE *f, long nPos, int nMode) {
-    /* Your implementation of fseek(). */
     return 0;
   }
 	
   int fflush(FILE *f) {
-    /* Your implementation of fflush(). */    
     return 0;
   }
 }
