@@ -8,6 +8,7 @@
 #include <vector>
 #include <numeric>
 #include <limits>
+#include <typeinfo>
 
 #include <XMC1100.h>
 #include <xmc_scu.h>
@@ -26,6 +27,64 @@ XMC_GPIO_CONFIG_t uart_tx;
 XMC_GPIO_CONFIG_t uart_rx;
 
 __IO uint32_t g_Ticks;
+
+enum test_enum_type_1 {
+	ENUM_1_0 = 0,
+	ENUM_1_1,
+	ENUM_1_2,
+};
+
+enum test_enum_type_2 {
+	ENUM_2_0 = 0,
+	ENUM_2_1 = 255,
+	ENUM_2_2,
+};
+
+enum test_enum_type_3 {
+	ENUM_3_0 = 0,
+	ENUM_3_1 = 65535,
+	ENUM_3_2,
+};
+
+enum test_enum_type_4 {
+	ENUM_4_0 = 0,
+	ENUM_4_1 = 4294967295,
+	ENUM_4_2,
+};
+
+enum test_enum_type_5 {
+	ENUM_5_0 = 0,
+	ENUM_5_1 = 18446744073709551615,
+//	ENUM_5_2,
+};
+
+enum test_enum_type_10: uint8_t {
+	ENUM_10_0 = 0,
+	ENUM_10_1 = 255,
+//	ENUM_10_2,
+};
+
+enum test_enum_type_11: uint64_t {
+	ENUM_11_0 = 0,
+	ENUM_11_1 = 255,
+	ENUM_11_2,
+};
+
+void test_enum_size(void) {
+	cout << typeid(test_enum_type_1).name() << ": " << sizeof(test_enum_type_1) << endl;
+	
+	cout << typeid(test_enum_type_2).name() << ": " << sizeof(test_enum_type_2) << endl;
+	
+	cout << typeid(test_enum_type_3).name() << ": " << sizeof(test_enum_type_3) << endl;
+	
+	cout << typeid(test_enum_type_4).name() << ": " << sizeof(test_enum_type_4) << endl;
+	
+	cout << typeid(test_enum_type_5).name() << ": " << sizeof(test_enum_type_5) << endl;
+	
+	cout << typeid(test_enum_type_10).name() << ": " << sizeof(test_enum_type_10) << endl;
+	
+	cout << typeid(test_enum_type_11).name() << ": " << sizeof(test_enum_type_11) << endl;
+}
 
 int main(void) {
 	LED LED1(0);
@@ -84,6 +143,8 @@ int main(void) {
 	vD.reserve(64);
 
 	while (1) {			
+		test_enum_size();
+		
 		LED1.Toogle();
 		pLED4->Toogle();
 
