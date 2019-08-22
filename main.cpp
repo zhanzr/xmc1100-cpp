@@ -6,9 +6,16 @@
 #include <algorithm>
 #include <iostream>
 #include <vector>
+#include <set>
+#include <list>
 #include <numeric>
 #include <limits>
+
 #include <typeinfo>
+#include <map>
+#include <string>
+#include <functional>
+#include <memory>
 
 #include <XMC1100.h>
 #include <xmc_scu.h>
@@ -86,6 +93,44 @@ void test_enum_size(void) {
 	cout << typeid(test_enum_type_11).name() << ": " << sizeof(test_enum_type_11) << endl;
 }
 
+
+struct A { virtual ~A() { } };
+struct B : A { };
+
+struct C { };
+struct D : C { };
+
+void test_typeinfo(void) {
+  B bobj;
+  A* ap = &bobj;
+  A& ar = bobj;
+  cout << "ap: " << typeid(*ap).name() << endl;
+  cout << "ar: " << typeid(ar).name() << endl;
+
+  D dobj;
+  C* cp = &dobj;
+  C& cr = dobj;
+  cout << "cp: " << typeid(*cp).name() << endl;
+  cout << "cr: " << typeid(cr).name() << endl;
+
+  cout << "LED: " << typeid(LED).name() << endl;
+  cout << "XMC_GPIO_PORT_t: " << typeid(XMC_GPIO_PORT_t).name() << endl;
+   cout << typeid( float).name() << endl;
+   cout << typeid( double).name() << endl;
+   cout << typeid( bool).name() << endl;
+   cout << typeid( int ).name() << endl;
+   cout << typeid( char).name() << endl;
+   cout << typeid( uint32_t).name() << endl;
+   cout << typeid( string).name() << endl;
+   cout << typeid( vector<int>).name() << endl;
+   cout << typeid( map<int, string>).name() << endl;
+   cout << typeid( set<float>).name() << endl;
+   cout << typeid( list<string>).name() << endl;
+
+ int myArray[10];
+  cout << typeid(myArray).name() << endl;
+}
+
 int main(void) {
 	LED LED1(0);
 	LED* pLED4 = new LED(4);
@@ -143,7 +188,8 @@ int main(void) {
 	vD.reserve(64);
 
 	while (1) {			
-		test_enum_size();
+//		test_enum_size();
+		test_typeinfo();
 		
 		LED1.Toogle();
 		pLED4->Toogle();
