@@ -22,9 +22,7 @@ class LED
 	static XMC_GPIO_MODE_t UnInitMode;
 	
 	static const uint8_t LED_COUNT = 5;
-	
-	static const led_position_pair LedPositions[LED_COUNT];
-	
+		
 		LED(void);
 		
 		LED(const uint8_t num);

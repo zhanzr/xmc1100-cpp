@@ -35,104 +35,12 @@ XMC_GPIO_CONFIG_t uart_rx;
 
 __IO uint32_t g_Ticks;
 
-enum test_enum_type_1 {
-	ENUM_1_0 = 0,
-	ENUM_1_1,
-	ENUM_1_2,
-};
-
-enum test_enum_type_2 {
-	ENUM_2_0 = 0,
-	ENUM_2_1 = 255,
-	ENUM_2_2,
-};
-
-enum test_enum_type_3 {
-	ENUM_3_0 = 0,
-	ENUM_3_1 = 65535,
-	ENUM_3_2,
-};
-
-enum test_enum_type_4 {
-	ENUM_4_0 = 0,
-	ENUM_4_1 = 4294967295,
-	ENUM_4_2,
-};
-
-enum test_enum_type_5 {
-	ENUM_5_0 = 0,
-	ENUM_5_1 = 18446744073709551615,
-//	ENUM_5_2,
-};
-
-enum test_enum_type_10: uint8_t {
-	ENUM_10_0 = 0,
-	ENUM_10_1 = 255,
-//	ENUM_10_2,
-};
-
-enum test_enum_type_11: uint64_t {
-	ENUM_11_0 = 0,
-	ENUM_11_1 = 255,
-	ENUM_11_2,
-};
-
-void test_enum_size(void) {
-	cout << typeid(test_enum_type_1).name() << ": " << sizeof(test_enum_type_1) << endl;
+const uint32_t TEST_GENERATE_SIZE = 32;
 	
-	cout << typeid(test_enum_type_2).name() << ": " << sizeof(test_enum_type_2) << endl;
-	
-	cout << typeid(test_enum_type_3).name() << ": " << sizeof(test_enum_type_3) << endl;
-	
-	cout << typeid(test_enum_type_4).name() << ": " << sizeof(test_enum_type_4) << endl;
-	
-	cout << typeid(test_enum_type_5).name() << ": " << sizeof(test_enum_type_5) << endl;
-	
-	cout << typeid(test_enum_type_10).name() << ": " << sizeof(test_enum_type_10) << endl;
-	
-	cout << typeid(test_enum_type_11).name() << ": " << sizeof(test_enum_type_11) << endl;
-}
-
-
-struct A { virtual ~A() { } };
-struct B : A { };
-
-struct C { };
-struct D : C { };
-
-void test_typeinfo(void) {
-  B bobj;
-  A* ap = &bobj;
-  A& ar = bobj;
-  cout << "ap: " << typeid(*ap).name() << endl;
-  cout << "ar: " << typeid(ar).name() << endl;
-
-  D dobj;
-  C* cp = &dobj;
-  C& cr = dobj;
-  cout << "cp: " << typeid(*cp).name() << endl;
-  cout << "cr: " << typeid(cr).name() << endl;
-
-  cout << "LED: " << typeid(LED).name() << endl;
-  cout << "XMC_GPIO_PORT_t: " << typeid(XMC_GPIO_PORT_t).name() << endl;
-   cout << typeid( float).name() << endl;
-   cout << typeid( double).name() << endl;
-   cout << typeid( bool).name() << endl;
-   cout << typeid( int ).name() << endl;
-   cout << typeid( char).name() << endl;
-   cout << typeid( uint32_t).name() << endl;
-   cout << typeid( string).name() << endl;
-   cout << typeid( vector<int>).name() << endl;
-   cout << typeid( map<int, string>).name() << endl;
-   cout << typeid( set<float>).name() << endl;
-   cout << typeid( list<string>).name() << endl;
-
- int myArray[10];
-  cout << typeid(myArray).name() << endl;
-}
+LED LED1(0);
+LED LED2(1);
 
 int main(void) {
-	LED LED1(0);
 	LED* pLED4 = new LED(4);
 	
   /* System timer configuration */
@@ -150,7 +58,14 @@ int main(void) {
 	uart_config.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE;
   ::XMC_UART_CH_Init(XMC_UART0_CH1, &uart_config);
   ::XMC_UART_CH_SetInputSource(XMC_UART0_CH1, XMC_UART_CH_INPUT_RXD,USIC0_C1_DX0_P1_3);
-  
+  ::XMC_UART_CH_EnableEvent(XMC_UART0_CH1, XMC_UART_CH_EVENT_STANDARD_RECEIVE);
+	::XMC_UART_CH_SetInterruptNodePointer(XMC_UART0_CH1, 0);	
+	::XMC_UART_CH_SetInterruptNodePointer(XMC_UART0_CH1, 1);
+	::XMC_UART_CH_SetInterruptNodePointer(XMC_UART0_CH1, 2);
+	::XMC_UART_CH_SetInterruptNodePointer(XMC_UART0_CH1, 3);
+	::XMC_UART_CH_SetInterruptNodePointer(XMC_UART0_CH1, 4);
+	::XMC_UART_CH_SetInterruptNodePointer(XMC_UART0_CH1, 5);
+
 	/* Start UART channel */
   ::XMC_UART_CH_Start(XMC_UART0_CH1);
 
@@ -185,27 +100,14 @@ int main(void) {
   ::XMC_RTC_Start();
 		
 	vector<uint32_t> vD;
-	vD.reserve(64);
+//	vD.reserve(64);
 
 	while (1) {			
 //		test_enum_size();
-		test_typeinfo();
-		
-		LED1.Toogle();
-		pLED4->Toogle();
-
-		__IO uint32_t tmpTick;
-		__IO uint32_t deltaTick;
-		
-		tmpTick = g_Ticks;
-		while((tmpTick+4000) > g_Ticks) {
-			__NOP();
-			__WFI();
-		}
-		
+//		test_typeinfo();	
 		vD.clear();
-		cout<<endl<<"generate 10 rand number and push to the vector:"<<endl;		
-		for(auto i=0; i<10; ++i) {
+		cout<<endl<<"generate " << TEST_GENERATE_SIZE << " rand number and push to the vector:"<<endl;		
+		for(auto i=0; i<TEST_GENERATE_SIZE; ++i) {
 			vD.push_back(rand());
 			cout<<vD.at(i)<<' ';			
 		}
@@ -217,9 +119,28 @@ int main(void) {
 			cout<<vD.at(i)<<' ';		
 		}
 		
-		cout<<endl<<"sum: "<< accumulate(vD.begin(), vD.end(), 0)<<" capacity: "<<vD.capacity()<<endl;			
+		cout<<endl<<"sum: "<< accumulate(vD.begin(), vD.end(), 0)<< " size: "<< vD.size() <<" capacity: "<<vD.capacity()<<endl;			
+		cout<<endl<<"generate " << TEST_GENERATE_SIZE << " rand number and push to the vector:"<<endl;		
+		for(auto i=0; i<TEST_GENERATE_SIZE; ++i) {
+			vD.push_back(rand());
+			cout<<vD.at(i)<<' ';			
+		}
+		cout<<endl<<"sum: "<< accumulate(vD.begin(), vD.end(), 0) << " size: "<< vD.size() << " capacity: "<<vD.capacity()<<endl;			
 		
 		::XMC_RTC_GetTime(&now_rtc_time);
 		cout<<now_rtc_time.hours<<":"<<now_rtc_time.minutes<<":"<<now_rtc_time.seconds<<endl;	
+				
+		LED1.Toogle();
+		pLED4->Toogle();
+		LED2.Toogle();
+		
+		__IO uint32_t tmpTick;
+		__IO uint32_t deltaTick;
+		
+		tmpTick = g_Ticks;
+		while((tmpTick+4000) > g_Ticks) {
+			__NOP();
+			__WFI();
+		}		
   }
 }
