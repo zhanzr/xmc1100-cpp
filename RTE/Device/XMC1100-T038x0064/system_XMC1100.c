@@ -57,6 +57,8 @@
 #include <XMC1100.h>
 #include "system_XMC1100.h"
 
+#include "serial.h"
+
 /*******************************************************************************
  * MACROS
  *******************************************************************************/
@@ -92,6 +94,29 @@ uint32_t SystemCoreClock __attribute__((section(".no_init")));
 uint32_t SystemCoreClock __at( 0x20003FFC );
 #endif
 
+XMC_GPIO_CONFIG_t uart_tx;
+XMC_GPIO_CONFIG_t uart_rx;
+
+/* UART configuration */
+#ifdef __cplusplus
+// before C++ 20, C style partial initialization not supported
+const XMC_UART_CH_CONFIG_t uart_config = {	
+  SERIAL_BAUDRATE,	// baudrate
+  false,	// normal_divider_mode
+	8U,	// data_bits
+	0,	// frame_length
+  1U,	// stop_bits
+	0, // oversampling
+	XMC_USIC_CH_PARITY_MODE_NONE, // parity_mode
+};
+#else
+const XMC_UART_CH_CONFIG_t uart_config = {	
+  .data_bits = 8U,
+  .stop_bits = 1U,
+  .baudrate = SERIAL_BAUDRATE
+};
+#endif
+
 /*******************************************************************************
  * API IMPLEMENTATION
  *******************************************************************************/
@@ -100,6 +125,30 @@ __WEAK void SystemInit(void)
 {    
   SystemCoreSetup();
   SystemCoreClockSetup();
+
+ /*Initialize the UART driver */
+	uart_tx.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT7;
+	uart_rx.mode = XMC_GPIO_MODE_INPUT_PULL_UP;
+	/* Configure UART channel */
+  XMC_UART_CH_Init(SERIAL_UART, &uart_config);
+  XMC_UART_CH_SetInputSource(SERIAL_UART, XMC_UART_CH_INPUT_RXD, SERIAL_RX_INPUT);
+  
+  /* Set service request for receive interrupt */
+  XMC_USIC_CH_SetInterruptNodePointer(SERIAL_UART, XMC_USIC_CH_INTERRUPT_NODE_POINTER_RECEIVE, 0U);
+  XMC_USIC_CH_SetInterruptNodePointer(SERIAL_UART, XMC_USIC_CH_INTERRUPT_NODE_POINTER_ALTERNATE_RECEIVE, 0U);
+
+  /*Set priority and enable NVIC node for receive interrupt*/
+  NVIC_SetPriority(SERIAL_RX_IRQN, 3);
+  NVIC_EnableIRQ(SERIAL_RX_IRQN);
+
+  XMC_UART_CH_EnableEvent(SERIAL_UART, XMC_UART_CH_EVENT_STANDARD_RECEIVE | XMC_UART_CH_EVENT_ALTERNATIVE_RECEIVE);
+	
+	/* Start UART channel */
+  XMC_UART_CH_Start(SERIAL_UART);
+
+  /* Configure pins */
+	XMC_GPIO_Init(SERIAL_TX_PIN, &uart_tx);
+  XMC_GPIO_Init(SERIAL_RX_PIN, &uart_rx);	
 }
 
 __WEAK void SystemCoreSetup(void)

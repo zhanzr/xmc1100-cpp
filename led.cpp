@@ -5,9 +5,12 @@
 #include <cstring>
 #include <cstdlib>
 #include <string>
+#include <iostream>
 
 #include <stdio.h>
 #include <stdlib.h>
+
+using namespace std;
 
 //Valid LED GPIO Pins for this application
 //0, 7 
@@ -35,6 +38,8 @@ LED::LED(void) {
 		LedPositions[3] = std::make_pair(XMC_GPIO_PORT1, 4);
 		LedPositions[4] = std::make_pair(XMC_GPIO_PORT1, 5);
 	}	
+	
+	cout << "Constructor default" << endl;
 }
 
 LED::LED(const uint8_t num) {
@@ -58,10 +63,13 @@ LED::LED(const uint8_t num) {
 	m_HasInit = true;
 
 	Off();
+	
+	cout << "Constructor with parameter " << (int)m_num << endl;
 }
 
 LED::~LED(void) {
 	UnInit();
+	cout << "Desstructor of " << (int)m_num << endl;
 }
 
 void LED::Init(const bool inv_logic) {
