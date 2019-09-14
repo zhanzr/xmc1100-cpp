@@ -1,27 +1,9 @@
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-
-#include <algorithm>
 #include <iostream>
-#include <vector>
-#include <set>
-#include <list>
-#include <numeric>
-#include <limits>
-#include <typeinfo>
-#include <map>
 #include <string>
-#include <functional>
 #include <memory>
 #include <iomanip>
 
 #include <XMC1100.h>
-#include <xmc_scu.h>
-#include <xmc_rtc.h>
-#include <xmc_uart.h>
-#include <xmc_gpio.h>
 
 #include "led.h"
 #include "dbg.h"
@@ -31,47 +13,38 @@ using namespace std;
 
 __IO uint32_t g_Ticks;
 
-namespace std {
-	typedef decltype(nullptr) nullptr_t;
-}
-
-void test_normal_ptr(void) {
-	cout << __func__ << endl;
+void test_normal_ptr(void) {	
+//	cout << __func__ << endl;
 	
-	LED* p_auto_led1 (new LED(3));
+	LED* p_auto_led1 (new LED(0));
 	__IO uint32_t tmpTick;
 	
 		LED* p_auto_led2 = p_auto_led1; 
 		
 		tmpTick = g_Ticks;
 		while((tmpTick+400) > g_Ticks) {
-			__NOP();
-			__WFI();
 		}	
 		
 		p_auto_led2->Toogle(); 
 		tmpTick = g_Ticks;
 		while((tmpTick+400) > g_Ticks) {
-			__NOP();
-			__WFI();
 		}				
 
 		p_auto_led1->Toogle(); 	
 		
-		cout << hex << endl;
-		cout << setw(8);
-    cout << setfill('0');
-		cout << p_auto_led1  << ' ' << p_auto_led2 << endl;
-		cout << dec << endl;
+//		cout << hex << endl;
+//		cout << setw(8);
+//    cout << setfill('0');
+//		cout << p_auto_led1  << ' ' << p_auto_led2 << endl;
+//		cout << dec << endl;
 
 		//Leaking memory
-	cout << "exit " << __func__ << endl;		
 }
 
 void test_auto_ptr(void) {
-	cout << __func__ << endl;
+//	cout << __func__ << endl;
 
-	auto_ptr<LED> p_auto_led1 (new LED(3));
+	auto_ptr<LED> p_auto_led1 (new LED(0));
 	__IO uint32_t tmpTick;
 	
 		// Copy and transfer ownership. 																			
@@ -80,13 +53,11 @@ void test_auto_ptr(void) {
 		
 		tmpTick = g_Ticks;
 		while((tmpTick+400) > g_Ticks) {
-			__NOP();
-			__WFI();
 		}	
 		
 		// Works.
 		if(nullptr != p_auto_led2.get()) {
-			cout << "non null pointer, will work" << endl;
+//			cout << "non null pointer, will work" << endl;
 			p_auto_led2.get()->Toogle(); 
 			tmpTick = g_Ticks;
 			while((tmpTick+400) > g_Ticks) {
@@ -94,7 +65,7 @@ void test_auto_ptr(void) {
 				__WFI();
 			}				
 		} else {
-			cout << "null pointer, will not work" << endl;
+//			cout << "null pointer, will not work" << endl;
 		}
 		
 		// Hopefully raises some NULL pointer exception.		
@@ -103,35 +74,27 @@ void test_auto_ptr(void) {
 			p_auto_led1.get()->Toogle(); 
 			tmpTick = g_Ticks;
 			while((tmpTick+400) > g_Ticks) {
-				__NOP();
-				__WFI();
 			}				
 		} else {
-			cout << "null pointer, will not work" << endl;
+//			cout << "null pointer, will not work" << endl;
 		}		
 		
-		cout << hex << endl;
-		cout << setw(8);
-    cout << setfill('0');
-		cout << p_auto_led1.get()  << ' ' << p_auto_led2.get() << endl;
-		cout << dec << endl;
+//		cout << hex << endl;
+//		cout << setw(8);
+//    cout << setfill('0');
+//		cout << p_auto_led1.get()  << ' ' << p_auto_led2.get() << endl;
+//		cout << dec << endl;
 		
 		//Will call destructor via the owner of the pointer
-	cout << "exit " << __func__ << endl;
+//	cout << "exit " << __func__ << endl;
 }
 		
-__declspec(noreturn) int main(void) {
-	LED LED1(0);
-	LED* pLED4 = new LED(4);
-	
+int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
 	
 	cout<<"Start @"<<SystemCoreClock/1000000<<" MHz"<<endl;
-	cout << XMC_LIB_MAJOR_VERSION << ' ' << XMC_LIB_MINOR_VERSION << ' ' << XMC_LIB_PATCH_VERSION <<endl;
-		
-	vector<uint32_t> vD;
-//	vD.reserve(64);
+//	cout << XMC_LIB_MAJOR_VERSION << ' ' << XMC_LIB_MINOR_VERSION << ' ' << XMC_LIB_PATCH_VERSION <<endl;
 
 	__IO uint32_t tmpTick;
 
@@ -143,21 +106,12 @@ __declspec(noreturn) int main(void) {
 //		cout << dec << endl;
 		
 		test_normal_ptr();
+		test_auto_ptr();		
 		
 		cout << endl;
 		tmpTick = g_Ticks;
 		while((tmpTick+4000) > g_Ticks) {
-			__NOP();
-			__WFI();
 		}		
 		
-		test_auto_ptr();	
-		
-		cout << endl;
-		tmpTick = g_Ticks;
-		while((tmpTick+4000) > g_Ticks) {
-			__NOP();
-			__WFI();
-		}		
   }
 }

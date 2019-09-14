@@ -35,6 +35,16 @@ inline int stdout_putchar (int ch) {
         return ch;
 }
 
+inline int stdin_getchar (void) {
+	uint16_t tmp_ch16 = XMC_UART_CH_GetReceivedData(XMC_UART0_CH1);
+	
+	return (int)tmp_ch16;
+}
+
+inline void ttywrch (int ch) {
+	XMC_UART_CH_Transmit(XMC_UART0_CH1, ch);
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -10,8 +10,8 @@
       <TargetName>cpp_prj</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
-      <uAC6>0</uAC6>
+      <pCCUsed>6120000::V6.12::.\ARMCLANG</pCCUsed>
+      <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>XMC1100-T038x0064</Device>
@@ -52,7 +52,7 @@
           <OutputName>UART_transmit</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\Listings\</ListingPath>
@@ -312,31 +312,31 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>7</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
-            <OneElfS>1</OneElfS>
+            <OneElfS>0</OneElfS>
             <Strict>0</Strict>
             <EnumInt>0</EnumInt>
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>3</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
             <uGnu>1</uGnu>
             <useXO>0</useXO>
-            <v6Lang>0</v6Lang>
-            <v6LangP>0</v6LangP>
+            <v6Lang>6</v6Lang>
+            <v6LangP>4</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
-            <v6Lto>0</v6Lto>
+            <v6Lto>1</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>--cpp11</MiscControls>
-              <Define>XMC1100_T038x0064, __USE_ANSI_EXAMPLE_RAND</Define>
+              <MiscControls></MiscControls>
+              <Define></Define>
               <Undefine></Undefine>
               <IncludePath>.</IncludePath>
             </VariousControls>
@@ -349,7 +349,7 @@
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
-            <uSurpInc>0</uSurpInc>
+            <uSurpInc>1</uSurpInc>
             <useXO>0</useXO>
             <uClangAs>0</uClangAs>
             <VariousControls>
@@ -369,7 +369,7 @@
             <TextAddressRange>0x10001000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\armcc.sct</ScatterFile>
+            <ScatterFile>.\armclang.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -396,16 +396,6 @@
               <FileName>led.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\led.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>dbg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\dbg.c</FilePath>
-            </File>
-            <File>
-              <FileName>file_descriptor.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\file_descriptor.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -465,19 +455,7 @@
           <targetInfo name="cpp_prj"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="XMClib" Csub="VADC" Cvendor="Infineon" Cversion="2.1.24" condition="XMC1 CMSIS SCU">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC1000/" vendor="Infineon" version="2.11.0"/>
-        <targetInfos>
-          <targetInfo name="cpp_prj"/>
-        </targetInfos>
-      </component>
       <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M">
-        <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
-        <targetInfos>
-          <targetInfo name="cpp_prj"/>
-        </targetInfos>
-      </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="TTY" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M">
         <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
         <targetInfos>
           <targetInfo name="cpp_prj"/>
@@ -515,13 +493,27 @@
         <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.5.1"/>
         <targetInfos/>
       </file>
-      <file attr="config" category="source" condition="XMC11xx ARM" name="Device\XMC1100_series\Source\ARM\startup_XMC1100.s" version="0.0.0">
-        <instance index="0">RTE\Device\XMC1100-T038x0064\startup_XMC1100.s</instance>
+      <file attr="config" category="linkerScript" condition="XMC11xx_0064_ARMCC6LTO" name="Device\XMC1100_series\Source\ARM6\XMC1100x0064.sct" version="1.0.0">
+        <instance index="0">RTE\Device\XMC1100-T038x0064\XMC1100x0064.sct</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.4.0" condition="XMC1"/>
         <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC1000/" vendor="Infineon" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="cpp_prj"/>
         </targetInfos>
+      </file>
+      <file attr="config" category="source" condition="XMC11xx ARMCC6LTO" name="Device\XMC1100_series\Source\ARM6\startup_XMC1100.asm" version="1.0.0">
+        <instance index="0">RTE\Device\XMC1100-T038x0064\startup_XMC1100.asm</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.4.0" condition="XMC1"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC1000/" vendor="Infineon" version="2.11.0"/>
+        <targetInfos>
+          <targetInfo name="cpp_prj"/>
+        </targetInfos>
+      </file>
+      <file attr="config" category="source" condition="XMC11xx ARM" name="Device\XMC1100_series\Source\ARM\startup_XMC1100.s" version="0.0.0">
+        <instance index="0" removed="1">RTE\Device\XMC1100-T038x0064\startup_XMC1100.s</instance>
+        <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.4.0" condition="XMC1"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC1000/" vendor="Infineon" version="2.11.0"/>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" condition="XMC11xx" name="Device\XMC1100_series\Source\system_XMC1100.c" version="0.0.0">
         <instance index="0">RTE\Device\XMC1100-T038x0064\system_XMC1100.c</instance>
