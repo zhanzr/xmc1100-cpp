@@ -121,9 +121,6 @@ void test_auto_ptr(void) {
 }
 		
 __declspec(noreturn) int main(void) {
-	LED LED1(0);
-	LED* pLED4 = new LED(4);
-	
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
 	

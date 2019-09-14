@@ -60,6 +60,8 @@ LED::LED(const uint8_t num) {
 											LedPositions[num].second, 
 											InitMode);
 
+	m_IsInv = (0 != num);
+	
 	m_HasInit = true;
 
 	Off();
