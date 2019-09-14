@@ -58,6 +58,12 @@ void test_normal_ptr(void) {
 
 		p_auto_led1->Toogle(); 	
 		
+		cout << hex << endl;
+		cout << setw(8);
+    cout << setfill('0');
+		cout << p_auto_led1  << ' ' << p_auto_led2 << endl;
+		cout << dec << endl;
+
 		//Leaking memory
 	cout << "exit " << __func__ << endl;		
 }
@@ -79,15 +85,36 @@ void test_auto_ptr(void) {
 		}	
 		
 		// Works.
-		p_auto_led2->Toogle(); 
-		tmpTick = g_Ticks;
-		while((tmpTick+400) > g_Ticks) {
-			__NOP();
-			__WFI();
-		}				
-
+		if(nullptr != p_auto_led2.get()) {
+			cout << "non null pointer, will work" << endl;
+			p_auto_led2.get()->Toogle(); 
+			tmpTick = g_Ticks;
+			while((tmpTick+400) > g_Ticks) {
+				__NOP();
+				__WFI();
+			}				
+		} else {
+			cout << "null pointer, will not work" << endl;
+		}
+		
 		// Hopefully raises some NULL pointer exception.		
-		p_auto_led1->Toogle(); 	
+		if(nullptr != p_auto_led1.get()) {
+			cout << "non null pointer, will work" << endl;
+			p_auto_led1.get()->Toogle(); 
+			tmpTick = g_Ticks;
+			while((tmpTick+400) > g_Ticks) {
+				__NOP();
+				__WFI();
+			}				
+		} else {
+			cout << "null pointer, will not work" << endl;
+		}		
+		
+		cout << hex << endl;
+		cout << setw(8);
+    cout << setfill('0');
+		cout << p_auto_led1.get()  << ' ' << p_auto_led2.get() << endl;
+		cout << dec << endl;
 		
 		//Will call destructor via the owner of the pointer
 	cout << "exit " << __func__ << endl;
