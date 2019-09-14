@@ -22,7 +22,6 @@ XMC_GPIO_MODE_t LED::UnInitMode = XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN;
 //TODO: This variable will be inited two times
 led_position_pair LedPositions[LED::LED_COUNT];
 
-
 //Default Constructor
 LED::LED(void) {
 	m_num = LED::LED_COUNT;

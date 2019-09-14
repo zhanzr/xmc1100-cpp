@@ -4,7 +4,9 @@
 extern "C" {
 #endif
 	
-void DbgPrintf(const char* str);
+#ifndef HZ
+#define	HZ	1000
+#endif
 
 #ifdef __cplusplus
 }

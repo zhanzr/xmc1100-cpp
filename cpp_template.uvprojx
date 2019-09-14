@@ -338,7 +338,7 @@
               <MiscControls>--cpp11</MiscControls>
               <Define>XMC1100_T038x0064, __USE_ANSI_EXAMPLE_RAND</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>.</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -360,7 +360,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -369,7 +369,7 @@
             <TextAddressRange>0x10001000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\armcc.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -448,12 +448,6 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="XMClib" Csub="GPIO" Cvendor="Infineon" Cversion="2.1.24" condition="XMC1 CMSIS">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC1000/" vendor="Infineon" version="2.11.0"/>
-        <targetInfos>
-          <targetInfo name="cpp_prj"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Device" Cgroup="XMClib" Csub="RTC" Cvendor="Infineon" Cversion="2.1.24" condition="XMC1 CMSIS SCU">
         <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC1000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC1000/" vendor="Infineon" version="2.11.0"/>
         <targetInfos>
           <targetInfo name="cpp_prj"/>

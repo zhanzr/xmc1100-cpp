@@ -81,7 +81,9 @@
  *******************************************************************************/
 
 #if defined ( __CC_ARM )
-uint32_t SystemCoreClock __attribute__((at(0x20003FFC)));
+uint32_t SystemCoreClock __attribute__( ( section( ".no_init"),zero_init) ) ;
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+uint32_t SystemCoreClock __attribute__((section(".bss.no_init")));
 #elif defined ( __ICCARM__ )
 __no_init uint32_t SystemCoreClock;
 #elif defined ( __GNUC__ )
